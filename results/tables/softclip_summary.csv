@@ -1,0 +1,4 @@
+sample,n_softclipped_reads,median_softclip,max_softclip,median_mapq
+sample1,13259,21.0,150,255.0
+sample2,41892,22.0,151,255.0
+sample3,21327,22.0,151,255.0

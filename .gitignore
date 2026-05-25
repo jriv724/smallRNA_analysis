@@ -1,0 +1,55 @@
+# =========================
+# Sequencing / alignment files
+# =========================
+*.bam
+*.bai
+*.sam
+*.fastq
+*.fastq.gz
+
+# =========================
+# Reference genomes / annotations
+# =========================
+*.fa
+*.fasta
+*.fa.gz
+*.fai
+*.gtf
+*.gtf.gz
+
+# BWA index files
+*.amb
+*.ann
+*.bwt
+*.pac
+*.sa
+
+# =========================
+# Variant calling outputs
+# =========================
+*.vcf.gz.csi
+
+# =========================
+# Jupyter / Python
+# =========================
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# =========================
+# macOS
+# =========================
+.DS_Store
+
+# =========================
+# Large intermediate outputs
+# =========================
+results/tables/read_level_qc_table.csv
+results/tables/large_softclipped_sequences.fasta
+results/tables/large_softclipped_sequences_remap.sam
+
+# =========================
+# Logs
+# =========================
+*.log
+*.out
