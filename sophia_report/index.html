@@ -321,8 +321,8 @@
     </div>
     <h1>Targeted Small RNA-seq Analysis Report</h1>
     <p class="hero-summary">
-      A stakeholder-facing summary of three hg19-aligned targeted small RNA-seq BAM files, focused on alignment quality,
-      barcode-aware molecule complexity, targeted gene enrichment, candidate variant interpretation, and recurrent soft-clipped read structure.
+      Stakeholder-facing summary of three hg19-aligned targeted small RNA-seq BAM files, focused on alignment quality,
+      molecular barcode complexity, targeted gene enrichment, candidate variant interpretation, and recurrent soft-clipped read structure.
     </p>
     <div class="hero-meta">
       <span><strong>Prepared by:</strong> Joshua Rivera, Ph.D.</span>
@@ -330,8 +330,7 @@
       <span><strong>Date:</strong> May 2026</span>
     </div>
     <div class="button-row">
-      <a class="button" href="final_report.pdf">Download PDF Report</a>
-      <a class="button secondary" href="#conclusion">Jump to Conclusion</a>
+      <a class="button" href="analysis_summary.pdf">Download PDF Report</a>
     </div>
   </header>
 
@@ -349,15 +348,13 @@
   </nav>
 
   <main>
+
     <section id="summary">
-      <h2>Summary</h2>
+      <h2>Executive Summary</h2>
       <p class="lead">
-        This analysis evaluated a targeted small RNA sequencing dataset consisting of three Illumina NextSeq-derived BAM files.
-        The assay showed technically successful targeted enrichment, with high-confidence alignments, reproducible read-length structure,
-        and recurrent enrichment across cancer-associated loci. Molecule-aware barcode deduplication revealed that raw read depth was
-        partially inflated by amplification redundancy, particularly in sample3. Candidate variants were identified within enriched genes,
-        but are interpreted as exploratory RNA-derived observations requiring orthogonal validation. Soft-clipped read analysis suggested
-        a structured mixture of repetitive sequence mapping, homologous alignment ambiguity, off-target enrichment, and complex RNA fragment behavior.
+        This analysis evaluated three hg19-aligned BAM files from a targeted small RNA sequencing workflow. The dataset showed strong
+        alignment quality, reproducible read-length structure, and enrichment concentrated within a focused set of cancer-associated loci.
+        Embedded 8-mer molecular barcodes stored in the <code>mb</code> BAM tag enabled deduplication and direct estimation of amplification redundancy.
       </p>
 
       <div class="grid">
@@ -367,18 +364,18 @@
         </div>
         <div class="card span-4">
           <div class="metric">8-mer</div>
-          <div class="metric-label">Molecular barcode tag used for molecule-aware deduplication</div>
+          <div class="metric-label">Molecular barcode used to estimate amplification redundancy</div>
         </div>
         <div class="card span-4">
-          <div class="metric">4</div>
-          <div class="metric-label">Core modules: QC, enrichment, variants, soft clips</div>
+          <div class="metric">FGFR1</div>
+          <div class="metric-label">Only locus with recurrent candidate variant signal across all three samples</div>
         </div>
       </div>
 
       <div class="callout">
-        <strong>Primary conclusion:</strong> The dataset is consistent with a technically successful targeted sequencing assay, but
-        sample-specific amplification redundancy and recurrent soft-clipped structures should be considered carefully before downstream
-        biological or clinical interpretation.
+        <strong>Primary conclusion:</strong> The dataset is technically sound and captures a focused set of recurrent genomic targets.
+        The main technical caveat is sample3, which showed reduced molecular complexity, elevated amplification redundancy, and increased
+        normalized soft-clipping rates.
       </div>
     </section>
 
@@ -386,42 +383,42 @@
       <h2>Study Objective</h2>
       <div class="card">
         <p>
-          The goal was to evaluate sequencing and alignment quality, identify enriched genes and targeted loci, characterize candidate
-          nucleotide variants, and investigate the origin and interpretation of large soft-clipped read segments. Because the assay is
-          targeted small RNA sequencing rather than whole-transcriptome or DNA sequencing, all findings are interpreted in the context of
-          targeted enrichment, short-fragment alignment behavior, and molecule-aware barcode deduplication.
+          The objective was to evaluate sequencing and alignment quality, identify enriched genes and targeted genomic loci,
+          characterize candidate genetic variants, and investigate large soft-clipped read segments. Because only aligned BAM files were
+          provided, interpretation was focused on alignment behavior, molecular barcode support, targeted enrichment, and sequence features
+          that could be characterized without raw FASTQ data or assay design files.
         </p>
       </div>
     </section>
 
     <section id="workflow">
       <h2>Analysis Workflow</h2>
-      <p class="lead">The workflow was organized to separate assay QC, molecule-aware enrichment, exploratory variant calling, and soft-clip interpretation.</p>
+      <p class="lead">The workflow was organized to move from dataset quality assessment into molecular abundance, gene enrichment, candidate variants, and soft-clipped read characterization.</p>
       <div class="workflow">
         <div class="workflow-step">
           <div class="step-num">1</div>
           <h3>BAM Inspection</h3>
-          <p>Reviewed alignment structure, read lengths, mapping quality, secondary alignments, and molecular barcode tags.</p>
+          <p>Reviewed read structure, alignment composition, mapping quality, read length, and embedded molecular barcode tags.</p>
         </div>
         <div class="workflow-step">
           <div class="step-num">2</div>
           <h3>QC Profiling</h3>
-          <p>Summarized read-length distributions, MAPQ behavior, barcode complexity, and amplification redundancy.</p>
+          <p>Summarized MAPQ distributions, primary and secondary alignments, read-length profiles, and barcode complexity.</p>
         </div>
         <div class="workflow-step">
           <div class="step-num">3</div>
           <h3>Gene Enrichment</h3>
-          <p>Aggregated reads into recurrent regions and annotated enriched loci with GENCODE v19.</p>
+          <p>Identified recurrent enriched genomic bins directly from BAM files and annotated them using GENCODE v19.</p>
         </div>
         <div class="workflow-step">
           <div class="step-num">4</div>
           <h3>Variant Analysis</h3>
-          <p>Used bcftools-based candidate calling within enriched target regions, interpreted cautiously as RNA-derived evidence.</p>
+          <p>Filtered candidate variants within enriched regions and evaluated recurrence across samples.</p>
         </div>
         <div class="workflow-step">
           <div class="step-num">5</div>
-          <h3>Soft-Clip Analysis</h3>
-          <p>Extracted large soft-clipped segments and remapped them to assess repetitive, ambiguous, or structurally complex origins.</p>
+          <h3>Soft Clips</h3>
+          <p>Characterized recurrent large soft-clipped reads and compared absolute and molecule-normalized soft-clipping signals.</p>
         </div>
       </div>
     </section>
@@ -429,242 +426,139 @@
     <section id="qc">
       <h2>Quality Control Overview</h2>
       <p class="lead">
-        Alignment-level QC showed strong targeted assay behavior. Samples shared reproducible fragment-length peaks around approximately
-        130 bp and 150 bp, and most reads aligned with high confidence. However, sample3 showed reduced molecular complexity and elevated
-        reads-per-barcode ratios, suggesting increased amplification redundancy relative to samples 1 and 2.
+        Alignment quality was strong across all three samples. Most reads clustered at high mapping quality values, primary alignments accounted
+        for the overwhelming majority of reads, and read-length distributions showed reproducible enrichment peaks near 130 nt and 150 nt.
       </p>
       <div class="grid">
-        <div class="card span-12 figure-card">
-          <img src="assets/figures/alignment_counts_by_sample.png" alt="Alignment counts by sample" />
+        <div class="card span-6 figure-card">
+          <img src="assets/figures/mapq_distribution_by_sample_report.png" alt="Mapping quality distribution by sample" />
           <div class="figure-text">
             <span class="tag">Figure 1</span>
-            <h3>Alignment counts by sample</h3>
-            <p><strong>What this shows:</strong> Total aligned read support across the three targeted small RNA-seq BAM files.</p>
-            <p><strong>Why it matters:</strong> This provides the sample-level sequencing context for downstream QC, enrichment, variant, and soft-clip interpretation.</p>
+            <h3>Mapping quality distribution</h3>
+            <p><strong>What this shows:</strong> Most alignments clustered at high-confidence MAPQ values across all three samples.</p>
+            <p><strong>Why it matters:</strong> The low fraction of low-MAPQ reads supports generally strong alignment confidence across enriched target regions.</p>
           </div>
         </div>
 
         <div class="card span-6 figure-card">
-          <img src="assets/figures/read_length_distribution_by_sample.png" alt="Read length distribution by sample" />
+          <img src="assets/figures/alignment_composition_by_sample.png" alt="Alignment composition by sample" />
           <div class="figure-text">
             <span class="tag">Figure 2</span>
-            <h3>Read length distributions</h3>
-            <p><strong>What this shows:</strong> Reproducible enrichment peaks around ~130 bp and ~150 bp across samples.</p>
-            <p><strong>Why it matters:</strong> Consistent fragment populations support a reproducible targeted assay structure rather than random sequencing noise.</p>
+            <h3>Alignment composition</h3>
+            <p><strong>What this shows:</strong> Primary alignments accounted for the overwhelming majority of reads in all three samples.</p>
+            <p><strong>Why it matters:</strong> Secondary alignments remained a minor component of the overall signal, consistent with targeted regions resolving largely to primary mappings.</p>
           </div>
         </div>
 
         <div class="card span-6 figure-card">
-          <img src="assets/figures/mapq_distribution_by_sample.png" alt="Mapping quality distribution by sample" />
+          <img src="assets/figures/read_length_distribution_by_sample_report.png" alt="Read length distribution by sample" />
           <div class="figure-text">
             <span class="tag">Figure 3</span>
-            <h3>Mapping quality distributions</h3>
-            <p><strong>What this shows:</strong> Most reads aligned with high confidence, with a minority of low-MAPQ alignments.</p>
-            <p><strong>Why it matters:</strong> Low-MAPQ reads likely reflect repetitive or homologous sequence content and should be interpreted cautiously.</p>
+            <h3>Read length distribution</h3>
+            <p><strong>What this shows:</strong> Read lengths were highly reproducible and showed prominent peaks near 130 nt and 150 nt.</p>
+            <p><strong>Why it matters:</strong> The recurring length structure supports nonrandom fragment populations associated with the targeted assay.</p>
           </div>
         </div>
 
-        <div class="card span-12 figure-card">
-          <img src="assets/figures/barcode_complexity_by_sample.png" alt="Barcode complexity by sample" />
+        <div class="card span-6 figure-card">
+          <img src="assets/figures/barcode_complexity_lollipop.png" alt="Reads per barcode by sample" />
           <div class="figure-text">
             <span class="tag">Figure 4</span>
-            <h3>Barcode complexity and amplification redundancy</h3>
-            <p><strong>What this shows:</strong> sample3 demonstrated elevated reads-per-barcode ratios compared with samples 1 and 2.</p>
-            <p><strong>Why it matters:</strong> Raw read depth in sample3 likely overestimates true molecular abundance, making barcode-aware deduplication essential.</p>
+            <h3>Barcode complexity</h3>
+            <p><strong>What this shows:</strong> sample3 had an approximately four to five-fold higher reads-per-barcode value than sample1 and sample2.</p>
+            <p><strong>Why it matters:</strong> This indicates reduced effective molecular complexity and increased amplification redundancy in sample3.</p>
           </div>
         </div>
       </div>
     </section>
 
     <section id="enrichment">
-      <h2>Targeted Gene Enrichment and Molecule-Aware Deduplication</h2>
+      <h2>Molecule Level Abundance and Gene Enrichment</h2>
       <p class="lead">
-        The assay enriched a biologically coherent set of cancer-associated genes, including <strong>GNAS, CCND1, FGFR1, AXL, MET,
-        EGFR, RAF1, BRAF, IDH2,</strong> and <strong>RAB7A</strong>. Barcode-aware deduplication substantially altered enrichment estimates
-        in sample3, where several loci showed extreme reads-per-molecule ratios.
+        Enrichment estimates were evaluated using both raw alignment counts and barcode-deduplicated molecular counts. Deduplication showed that
+        sample3 was strongly affected by amplification redundancy, while the overall enrichment profile remained concentrated within a recurrent set
+        of cancer-associated genes.
       </p>
 
       <div class="grid">
-        <div class="card span-6 figure-card">
-          <img src="assets/figures/shared_enriched_regions.png" alt="Shared enriched regions" />
+        <div class="card span-12 figure-card">
+          <img src="assets/figures/raw_vs_dedup_enrichment_three_panel.png" alt="Raw versus deduplicated enrichment across target regions" />
           <div class="figure-text">
             <span class="tag">Figure 5</span>
-            <h3>Shared enriched regions</h3>
-            <p><strong>What this shows:</strong> Enrichment was concentrated in recurrent genomic regions shared across samples.</p>
-            <p><strong>Why it matters:</strong> This supports the interpretation that the assay captured targeted loci rather than random genome-wide coverage.</p>
-          </div>
-        </div>
-
-        <div class="card span-6 figure-card">
-          <img src="assets/figures/gene_raw_vs_dedup_enrichment.png" alt="Raw versus deduplicated enrichment" />
-          <div class="figure-text">
-            <span class="tag">Figure 6</span>
-            <h3>Raw vs barcode-deduplicated enrichment</h3>
-            <p><strong>What this shows:</strong> Deduplication strongly affected enrichment estimates, especially in sample3.</p>
-            <p><strong>Why it matters:</strong> Molecule-aware quantification prevents amplification-heavy loci from being overinterpreted as true abundance signals.</p>
-          </div>
-        </div>
-
-        <div class="card span-6 figure-card">
-          <img src="assets/figures/top_enriched_genes_dedup_counts.png" alt="Top enriched genes by deduplicated counts" />
-          <div class="figure-text">
-            <span class="tag">Figure 7</span>
-            <h3>Top enriched genes after barcode-aware deduplication</h3>
-            <p><strong>What this shows:</strong> The most strongly represented genes after collapsing reads by molecular barcode.</p>
-            <p><strong>Why it matters:</strong> Deduplicated counts provide a more molecule-aware estimate of targeted enrichment than raw read depth alone.</p>
-          </div>
-        </div>
-
-        <div class="card span-6 figure-card">
-          <img src="assets/figures/gene_amplification_redundancy.png" alt="Gene amplification redundancy" />
-          <div class="figure-text">
-            <span class="tag">Figure 8</span>
-            <h3>Amplification redundancy by gene</h3>
-            <p><strong>What this shows:</strong> Gene-level differences between raw read support and barcode-deduplicated molecular support.</p>
-            <p><strong>Why it matters:</strong> High redundancy indicates loci where raw read depth could overstate true molecular abundance.</p>
+            <h3>Raw versus deduplicated enrichment across target regions</h3>
+            <p><strong>What this shows:</strong> Raw read counts and deduplicated molecule counts for the top enriched genomic bins in each sample.</p>
+            <p><strong>Why it matters:</strong> The large raw-to-deduplicated shift in sample3 shows why raw sequencing depth can overestimate true molecular abundance.</p>
           </div>
         </div>
 
         <div class="card span-12 figure-card">
-          <img src="assets/figures/top_regions_raw_vs_dedup_counts.png" alt="Top regions raw versus deduplicated counts" />
+          <img src="assets/figures/sample_gene_enrichment_dedup_report.png" alt="Gene-level enrichment following molecular barcode deduplication" />
           <div class="figure-text">
-            <span class="tag">Figure 9</span>
-            <h3>Top enriched regions: raw vs deduplicated counts</h3>
-            <p><strong>What this shows:</strong> Region-level enrichment before and after molecule-aware deduplication.</p>
-            <p><strong>Why it matters:</strong> This highlights where amplification strongly changes the apparent ranking of targeted loci.</p>
-          </div>
-        </div>
-
-        <div class="card span-4 figure-card">
-          <img src="assets/figures/sample1_top_regions_raw_vs_dedup.png" alt="sample1 top regions raw versus deduplicated" />
-          <div class="figure-text">
-            <span class="tag">Figure 10A</span>
-            <h3>sample1 region-level redundancy</h3>
-            <p><strong>What this shows:</strong> Raw and deduplicated enrichment patterns for sample1.</p>
-          </div>
-        </div>
-
-        <div class="card span-4 figure-card">
-          <img src="assets/figures/sample2_top_regions_raw_vs_dedup.png" alt="sample2 top regions raw versus deduplicated" />
-          <div class="figure-text">
-            <span class="tag">Figure 10B</span>
-            <h3>sample2 region-level redundancy</h3>
-            <p><strong>What this shows:</strong> Raw and deduplicated enrichment patterns for sample2.</p>
-          </div>
-        </div>
-
-        <div class="card span-4 figure-card">
-          <img src="assets/figures/sample3_top_regions_raw_vs_dedup.png" alt="sample3 top regions raw versus deduplicated" />
-          <div class="figure-text">
-            <span class="tag">Figure 10C</span>
-            <h3>sample3 region-level redundancy</h3>
-            <p><strong>What this shows:</strong> sample3 shows the most pronounced raw-versus-deduplicated divergence.</p>
+            <span class="tag">Figure 6</span>
+            <h3>Gene-level enrichment after molecular barcode deduplication</h3>
+            <p><strong>What this shows:</strong> The dominant enriched genes after deduplication included CCND1, AXL, GNAS, MET, IDH2, BRAF, HRAS, RAF1, and MAP2K1.</p>
+            <p><strong>Why it matters:</strong> The same major genes remained enriched after deduplication, indicating that the target profile was not driven solely by amplification artifacts.</p>
           </div>
         </div>
       </div>
 
       <div class="callout">
-        <strong>Interpretation:</strong> The enrichment profile is technically coherent and biologically relevant, but sample3 requires extra caution because
-        amplification bias substantially distorts raw read counts.
+        <strong>Interpretation:</strong> The assay recovered a focused set of recurrent cancer-associated loci. sample3 was retained for downstream analysis,
+        but its abundance estimates should be interpreted primarily through deduplicated molecule counts rather than raw read depth.
       </div>
     </section>
 
     <section id="variants">
       <h2>Candidate Variant Analysis</h2>
       <p class="lead">
-        Candidate nucleotide substitutions and small indels were evaluated within enriched target regions using a bcftools-based strategy.
-        Multiple candidate variants were identified in cancer-associated genes including <strong>FGFR1, AXL, RAF1, EGFR, MET, CCND1,</strong>
-        and <strong>RAB7A</strong>. FGFR1 showed recurrent high-confidence substitutions across all three samples, while sample2 showed the
-        broadest overall candidate variant burden.
+        Sequence variation within enriched regions was limited. Most candidate variants were restricted to individual samples, while two adjacent
+        FGFR1 substitutions were detected across all three libraries with consistent read-depth support.
       </p>
 
       <div class="grid">
         <div class="card span-12 figure-card">
-          <img src="assets/figures/candidate_variants_by_gene_sample.png" alt="Candidate variants by gene and sample" />
+          <img src="assets/figures/variant_support_heatmap_report.png" alt="Candidate variant support across samples" />
           <div class="figure-text">
-            <span class="tag">Figure 11</span>
-            <h3>Candidate variants by gene and sample</h3>
-            <p><strong>What this shows:</strong> Candidate variants localized to enriched genes, including receptor tyrosine kinase and MAPK-associated loci.</p>
-            <p><strong>Why it matters:</strong> These observations are biologically plausible but exploratory because RNA-seq variant calls can be affected by expression bias, RNA editing, RT artifacts, and amplification redundancy.</p>
-          </div>
-        </div>
-
-        <div class="card span-6 figure-card">
-          <img src="assets/figures/variant_support_heatmap.png" alt="Variant support heatmap" />
-          <div class="figure-text">
-            <span class="tag">Figure 12</span>
-            <h3>Variant support heatmap</h3>
-            <p><strong>What this shows:</strong> Relative support for candidate events across genes and samples.</p>
-            <p><strong>Why it matters:</strong> Heatmap structure helps distinguish recurrent signals from sample-specific candidates.</p>
-          </div>
-        </div>
-
-        <div class="card span-6 figure-card">
-          <img src="assets/figures/variant_recurrence_across_samples.png" alt="Variant recurrence across samples" />
-          <div class="figure-text">
-            <span class="tag">Figure 13</span>
-            <h3>Variant recurrence across samples</h3>
-            <p><strong>What this shows:</strong> Candidate events ranked by recurrence across the three BAM files.</p>
-            <p><strong>Why it matters:</strong> Recurrent RNA-derived variants may represent stronger hypotheses, while still requiring orthogonal validation.</p>
+            <span class="tag">Figure 7</span>
+            <h3>Candidate variant support across samples</h3>
+            <p><strong>What this shows:</strong> Read-depth support for filtered candidate variants identified within enriched target regions.</p>
+            <p><strong>Why it matters:</strong> FGFR1 was the only locus showing reproducible variant-associated signal across all three samples. Without matched controls or orthogonal validation, these remain candidate observations.</p>
           </div>
         </div>
       </div>
     </section>
 
     <section id="softclips">
-      <h2>Soft-Clipped Read Analysis</h2>
+      <h2>Soft-Clipped Read Characterization</h2>
       <p class="lead">
-        Large soft-clipped reads were investigated to assess whether they reflected artifacts, repetitive sequence mapping, alignment ambiguity,
-        or structurally complex RNA fragments. Samples 1 and 2 showed more constrained soft-clipping distributions, while sample3 had broader
-        clipping behavior extending beyond 100 bp. Soft clips were recurrent at specific loci, including a strong signal near the enriched
-        <strong>CCND1</strong> region on chromosome 11.
+        Large soft-clipped reads were readily detected but were concentrated within a limited number of recurrent loci. The most frequent annotated
+        locus mapped to CCND1, while several high-frequency regions mapped to poorly annotated or unplaced intervals including GL000220.1.
       </p>
 
       <div class="grid">
-        <div class="card span-6 figure-card">
-          <img src="assets/figures/softclip_length_violin_points_by_sample.png" alt="Softclip length distributions by sample" />
+        <div class="card span-8 figure-card">
+          <img src="assets/figures/top_softclip_gene_annotated_loci_report.png" alt="Most recurrent soft-clipped loci with gene annotations" />
           <div class="figure-text">
-            <span class="tag">Figure 14</span>
-            <h3>Soft-clip length distributions</h3>
-            <p><strong>What this shows:</strong> sample3 exhibited a broader distribution of large soft-clipped segments than samples 1 and 2.</p>
-            <p><strong>Why it matters:</strong> The broader pattern may reflect sample-specific alignment complexity, repetitive sequence content, or technical irregularity.</p>
+            <span class="tag">Figure 8A</span>
+            <h3>Recurrent large soft-clipped loci</h3>
+            <p><strong>What this shows:</strong> The top recurrent genomic regions associated with large soft-clipped reads across samples.</p>
+            <p><strong>Why it matters:</strong> Soft clipping was concentrated within specific loci rather than distributed uniformly throughout the genome.</p>
           </div>
         </div>
 
-        <div class="card span-6 figure-card">
-          <img src="assets/figures/top_softclip_gene_annotated_loci.png" alt="Top softclip gene annotated loci" />
+        <div class="card span-4 figure-card">
+          <img src="assets/figures/softclipped_reads_by_sample_report.png" alt="Large soft-clipped reads by sample" />
           <div class="figure-text">
-            <span class="tag">Figure 15</span>
-            <h3>Recurrent soft-clipped loci</h3>
-            <p><strong>What this shows:</strong> Soft clipping was enriched at recurrent genomic loci rather than randomly distributed.</p>
-            <p><strong>Why it matters:</strong> Recurrent locus-level structure argues against pure sequencing noise and supports a mixture of repetitive mapping and complex transcript-associated behavior.</p>
-          </div>
-        </div>
-
-        <div class="card span-6 figure-card">
-          <img src="assets/figures/softclip_length_distribution.png" alt="Softclip length distribution" />
-          <div class="figure-text">
-            <span class="tag">Figure 16</span>
-            <h3>Global soft-clip length distribution</h3>
-            <p><strong>What this shows:</strong> The overall distribution of large soft-clipped segments across the dataset.</p>
-            <p><strong>Why it matters:</strong> This contextualizes whether soft clipping is dominated by short edge effects or longer ambiguous segments.</p>
-          </div>
-        </div>
-
-        <div class="card span-6 figure-card">
-          <img src="assets/figures/top_softclip_loci.png" alt="Top softclip loci" />
-          <div class="figure-text">
-            <span class="tag">Figure 17</span>
-            <h3>Top recurrent soft-clip loci</h3>
-            <p><strong>What this shows:</strong> Genomic loci with the strongest recurrent soft-clip support.</p>
-            <p><strong>Why it matters:</strong> Locus recurrence helps prioritize whether soft clips reflect structured biology, repetitive sequence, or target-associated alignment ambiguity.</p>
+            <span class="tag">Figure 8B</span>
+            <h3>Large soft-clipped reads by sample</h3>
+            <p><strong>What this shows:</strong> sample2 had the largest absolute number of large soft-clipped reads, followed by sample3 and sample1.</p>
+            <p><strong>Why it matters:</strong> After normalization by deduplicated molecular abundance, sample3 showed a disproportionate soft-clipping burden, especially within HRAS, CCND1, and AXL.</p>
           </div>
         </div>
       </div>
 
       <div class="callout">
-        <strong>Soft-clip conclusion:</strong> Remapping suggested enrichment in repetitive/unplaced contigs such as <code>Un_gl000220</code>,
-        multiple canonical chromosomes, and previously enriched loci. No single dominant recurrent fusion-like event was identified.
+        <strong>Soft-clip interpretation:</strong> The current data do not support a structural rearrangement or gene fusion call. The pattern is still notable because sample3 combines elevated soft clipping, increased amplification redundancy, and reduced molecular complexity.
       </div>
     </section>
 
@@ -682,24 +576,29 @@
             </thead>
             <tbody>
               <tr>
-                <td>Technically successful targeted enrichment</td>
-                <td>Recurrent enrichment across shared cancer-associated loci including CCND1, FGFR1, AXL, MET, EGFR, RAF1, BRAF, GNAS, IDH2, and RAB7A.</td>
-                <td>The assay captured a focused, biologically coherent set of target regions rather than diffuse genome-wide signal.</td>
+                <td>Technically consistent targeted assay</td>
+                <td>High mapping confidence, low secondary alignment fractions, and reproducible read-length structure.</td>
+                <td>The dataset behaves like a focused targeted assay rather than broad, nonspecific coverage.</td>
               </tr>
               <tr>
-                <td>sample3 has elevated amplification redundancy</td>
-                <td>Barcode complexity and raw-vs-deduplicated comparisons showed high reads-per-molecule ratios in sample3.</td>
-                <td>sample3 raw read depth should not be interpreted as direct molecular abundance without barcode-aware correction.</td>
+                <td>sample3 has reduced molecular complexity</td>
+                <td>Highest reads-per-barcode ratio and largest reduction in signal after deduplication.</td>
+                <td>Raw read depth in sample3 overstates molecular abundance and should be interpreted using deduplicated molecule counts.</td>
               </tr>
               <tr>
-                <td>Candidate variants are biologically plausible but exploratory</td>
-                <td>Variant calls occurred in enriched cancer-associated genes, with recurrent FGFR1 substitutions observed across samples.</td>
-                <td>RNA-derived variant evidence requires cautious interpretation and orthogonal DNA-level validation.</td>
+                <td>Enrichment is concentrated in cancer-associated loci</td>
+                <td>Recurrent enrichment of CCND1, AXL, MET, EGFR, FGFR1, BRAF, HRAS, and MAP2K1.</td>
+                <td>The target profile is consistent with a clinically focused targeted assay.</td>
               </tr>
               <tr>
-                <td>Soft-clipped reads are structured, not random</td>
-                <td>Large soft clips recurred at enriched loci and remapped partly to repetitive/unplaced contigs.</td>
-                <td>The most likely explanation is a mixture of repetitive mapping, homologous alignment ambiguity, off-target enrichment, and complex RNA fragments.</td>
+                <td>FGFR1 is the most reproducible candidate variant signal</td>
+                <td>Two adjacent FGFR1 substitutions were detected across all three samples.</td>
+                <td>The event is notable but cannot be classified as biological or technical without matched controls and orthogonal validation.</td>
+              </tr>
+              <tr>
+                <td>Soft clipping is recurrent but not diagnostic</td>
+                <td>Large soft-clipped reads concentrated in a small set of loci, including CCND1 and GL000220.1 intervals.</td>
+                <td>The signal is systematic, but current evidence does not support a definitive fusion or structural rearrangement call.</td>
               </tr>
             </tbody>
           </table>
@@ -711,16 +610,19 @@
       <h2>Discussion</h2>
       <div class="card">
         <p>
-          The most important interpretation is that this dataset behaves like a targeted sequencing assay with coherent enrichment at
-          cancer-associated loci, rather than a random or failed sequencing experiment. The read-length, MAPQ, and enrichment profiles collectively
-          support a technically successful assay. However, molecule-aware analysis shows that read depth and molecular abundance diverge in sample3,
-          making barcode-aware deduplication necessary for any quantitative comparison.
+          The dataset was technically consistent across all three samples. Alignment quality was strong, read-length distributions were reproducible,
+          and enrichment was concentrated within a relatively small number of genomic regions. Despite differences in sequencing depth and barcode complexity,
+          the same major targets were recovered across samples, supporting a focused enrichment strategy rather than broad, nonspecific coverage.
         </p>
         <p>
-          The variant and soft-clipping analyses are best viewed as hypothesis-generating. Candidate variants localized to biologically relevant genes,
-          but targeted RNA sequencing cannot distinguish somatic DNA variation from RNA editing, allele-specific expression, reverse-transcription artifacts,
-          or amplification-related effects without additional validation. Similarly, recurrent soft-clipped segments show meaningful structure, but remapping
-          supports a mixed origin involving repetitive reference content and alignment ambiguity rather than a single dominant fusion event.
+          The largest source of variation was molecular complexity. Barcode deduplication had modest effects in sample1 and sample2 but substantially reduced
+          abundance estimates in sample3. Elevated reads-per-barcode values, fewer unique molecules, and large differences between raw and deduplicated counts
+          all point to increased amplification redundancy within that library.
+        </p>
+        <p>
+          Sequence variation within enriched regions was limited. FGFR1 was the only locus showing reproducible variant-associated signal across the dataset.
+          Soft-clipped reads were also concentrated within a limited number of recurrent loci. While the current data do not support a structural rearrangement
+          or gene fusion call, the sample3 pattern may warrant additional investigation if raw sequencing data or orthogonal validation become available.
         </p>
       </div>
     </section>
@@ -729,10 +631,10 @@
       <h2>Conclusion</h2>
       <div class="callout">
         <p>
-          Collectively, the dataset represents a technically successful targeted small RNA-seq assay with biologically structured enrichment patterns.
-          The strongest findings are the recurrent enrichment of cancer-associated loci and the clear value of molecule-aware barcode deduplication,
-          particularly for sample3. Candidate variants and soft-clipped reads provide useful exploratory signals, but downstream biological or clinical
-          interpretation would require orthogonal validation and careful accounting for amplification redundancy and repetitive-sequence alignment behavior.
+          The dataset is technically sound and captures a focused set of recurrent genomic targets with strong consistency across samples. The most important
+          technical observation was the distinct behavior of sample3, which showed reduced molecular complexity, elevated amplification redundancy, and increased
+          normalized soft-clipping rates. Molecular barcode information was critical for separating amplification-driven signal from true molecular abundance and
+          for prioritizing features that may warrant downstream investigation.
         </p>
       </div>
     </section>
@@ -741,12 +643,11 @@
       <h2>Reproducibility and Supplemental Materials</h2>
       <div class="card">
         <p>
-          The full computational workflow, notebooks, and supporting scripts are provided as supplemental materials. This web report and the
-          accompanying PDF are intended as the primary review documents, while the repository provides reproducibility and implementation details.
+          The full computational workflow, notebooks, figures, and supporting scripts are provided as supplemental materials. This web report and the accompanying
+          PDF are intended as primary review documents, while the repository provides implementation details.
         </p>
         <p><strong>Reference resources:</strong> hg19 reference genome and GENCODE v19 annotations.</p>
-        <p><strong>Regeneration command:</strong> <code>bash scripts/download_and_index_references.sh</code></p>
-        <p><strong>Repository:</strong> <a href="https://github.com/jriv724/smallRNA_analysis" target="_blank"></a>github.com/jriv724/smallRNA_analysis</a></p>
+        <p><strong>Repository:</strong> <a href="https://github.com/jriv724/smallRNA_analysis" target="_blank">github.com/jriv724/smallRNA_analysis</a></p>
       </div>
     </section>
   </main>
