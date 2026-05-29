@@ -1,0 +1,4 @@
+sample,n_alignments,primary_alignments,secondary_pct,median_read_length,median_mapq,unique_barcodes,reads_per_barcode
+sample1,1453538,1443266,0.71,95.0,255.0,65295,22.1
+sample2,1171294,1146078,2.15,99.0,255.0,62133,18.4
+sample3,1816522,1805114,0.63,99.0,255.0,18823,95.9
